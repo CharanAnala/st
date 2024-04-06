@@ -18,13 +18,14 @@ def main():
     st.title("Folder Upload and Download App")
 
     # Upload folder
-    uploaded_folder = st.file_uploader("Upload a folder", type="")
+    uploaded_folder = st.file_uploader("Upload a folder", type=None)
 
     if uploaded_folder is not None:
-        folder_path = Path(uploaded_folder.name)
+        folder_path = Path("uploaded_folder")
         folder_path.mkdir(parents=True, exist_ok=True)
-        with open(os.path.join(str(folder_path), uploaded_folder.name), "wb") as f:
-            f.write(uploaded_folder.getvalue())
+        for file in uploaded_folder:
+            with open(os.path.join(str(folder_path), file.name), "wb") as f:
+                f.write(file.getvalue())
 
         # Create a download link for the uploaded folder
         st.markdown(get_download_link(folder_path), unsafe_allow_html=True)
